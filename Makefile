@@ -11,7 +11,8 @@ ARCHITECTURES=amd64 arm64 ppc64le s390x
 
 .PHONY: run
 run:
-	ARGS={$(ARGS):""}
+	# Set ARGS to pass flags to this Make target. E.g. ARGS="--version"
+	ARGS={"$(ARGS)":""}
 	go run cmd/knex/main.go $(ARGS)
 
 .PHONY: build

@@ -35,6 +35,7 @@ func Register(name string, plugin Plugin) {
 
 type Plugin interface {
 	Name() string
+	Run() error
 }
 
 func ensurePluginNameMeetsStandards(name string) error {

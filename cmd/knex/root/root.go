@@ -9,6 +9,7 @@ import (
 	_ "github.com/redhat-openshift-ecosystem/knex/internal/plugin/containercert"
 
 	"github.com/redhat-openshift-ecosystem/knex/cmd/knex/listplugins"
+	"github.com/redhat-openshift-ecosystem/knex/cmd/knex/run"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -29,6 +30,7 @@ func NewCommand(
 	}
 
 	cmd.AddCommand(listplugins.NewCommand(ctx, config))
+	cmd.AddCommand(run.Newcommand(ctx, config))
 	return cmd
 }
 

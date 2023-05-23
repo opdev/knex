@@ -20,8 +20,8 @@ func (p *containerCertificationPlugin) Register() error {
 	return nil
 }
 
-func (p *containerCertificationPlugin) Run(image string) error {
-	fmt.Println("The image is:", image)
+func (p *containerCertificationPlugin) Run() error {
+	fmt.Println("Container Certification is Running")
 	return nil
 }
 
