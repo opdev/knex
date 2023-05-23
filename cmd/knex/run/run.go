@@ -3,8 +3,13 @@ package run
 import (
 	"context"
 	"fmt"
+	"io"
+	"log"
+	"os"
 
 	"github.com/redhat-openshift-ecosystem/knex/plugin"
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/formatters"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -19,10 +24,11 @@ func Newcommand(
 		ValidArgs: validArgs(),
 		Args: cobra.MatchAll(
 			cobra.ExactArgs(1),
+			// This isn't going to work if we plan on allowing plugins to accept arguments/flags.
 			cobra.OnlyValidArgs,
 		),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return run(args[0])
+			return run(ctx, args[0], config)
 		},
 	}
 
@@ -38,8 +44,70 @@ func validArgs() []string {
 	return validArgs
 }
 
-func run(pluginName string) error {
+func run(
+	ctx context.Context,
+	pluginName string,
+	config *viper.Viper,
+) error {
 	fmt.Println("Run invoked with plugin:", pluginName)
 	plugin := plugin.RegisteredPlugins()[pluginName]
-	return plugin.Run()
+	fmt.Println("Running Plugin =>", plugin.Name(), plugin.Version())
+	defer fmt.Println("Plugin Complete", plugin.Name())
+	if err := plugin.Init(config); err != nil {
+		fmt.Println("ERR problem running init", err)
+		return err
+	}
+
+	if err := plugin.ExecuteChecks(ctx); err != nil {
+		fmt.Println("ERR problem running ExecuteChecks", err)
+		return err
+	}
+
+	results := plugin.Results(ctx)
+	f, err := plugin.OpenFile("results.json")
+	if err != nil {
+		fmt.Println("ERR problem opening results file", err)
+		return err
+	}
+	defer f.Close()
+	out := io.MultiWriter(os.Stdout, f)
+
+	textResults, err := formatAsText(ctx, results)
+	if err != nil {
+		fmt.Println("ERR converting results to text", err)
+		return err
+	}
+
+	out.Write(textResults)
+
+	if config.GetBool("submit") {
+		if err := plugin.Submit(ctx); err != nil {
+			log.Println("Err submitting", err)
+			return err
+		}
+	}
+
+	return nil
+}
+
+// Just as poc formatter, borrowed from preflight's library docs
+var formatAsText formatters.FormatterFunc = func(ctx context.Context, r certification.Results) (response []byte, formattingError error) {
+	b := []byte{}
+	for _, v := range r.Passed {
+		t := v.ElapsedTime.Milliseconds()
+		s := fmt.Sprintf("PASSED  %s in %dms\n", v.Name(), t)
+		b = append(b, []byte(s)...)
+	}
+	for _, v := range r.Failed {
+		t := v.ElapsedTime.Milliseconds()
+		s := fmt.Sprintf("FAILED  %s in %dms\n", v.Name(), t)
+		b = append(b, []byte(s)...)
+	}
+	for _, v := range r.Errors {
+		t := v.ElapsedTime.Milliseconds()
+		s := fmt.Sprintf("ERRORED %s in %dms\n", v.Name(), t)
+		b = append(b, []byte(s)...)
+	}
+
+	return b, nil
 }

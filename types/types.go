@@ -11,6 +11,7 @@ import (
 	"time"
 
 	v1 "github.com/google/go-containerregistry/pkg/v1"
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 )
 
 // CheckEngine defines the functionality necessary to run all checks for a policy,
@@ -22,7 +23,7 @@ type CheckEngine interface {
 	// execution itself.
 	ExecuteChecks(context.Context) error
 	// Results returns the outcome of executing all checks.
-	Results(context.Context) Results
+	Results(context.Context) certification.Results
 }
 
 // Check as an interface containing all methods necessary
@@ -54,15 +55,15 @@ type Result struct {
 	ElapsedTime time.Duration
 }
 
-type Results struct {
-	TestedImage       string
-	PassedOverall     bool
-	TestedOn          OpenshiftClusterVersion
-	CertificationHash string
-	Passed            []Result
-	Failed            []Result
-	Errors            []Result
-}
+// type Results struct {
+// 	TestedImage       string
+// 	PassedOverall     bool
+// 	TestedOn          OpenshiftClusterVersion
+// 	CertificationHash string
+// 	Passed            []Result
+// 	Failed            []Result
+// 	Errors            []Result
+// }
 
 // Metadata contains useful information regarding the check.
 type Metadata struct {
@@ -112,7 +113,7 @@ type ResponseFormatter interface {
 	FileExtension() string
 	// Format takes Results, formats it as needed, and returns the formatted
 	// results ready to write as a byte slice.
-	Format(context.Context, Results) (response []byte, formattingError error)
+	Format(context.Context, certification.Results) (response []byte, formattingError error)
 }
 
 // ResultWriter defines methods associated with writing check results.
