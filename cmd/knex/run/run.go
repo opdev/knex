@@ -15,7 +15,7 @@ func Newcommand(
 ) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:       "run",
-		Short:     "Run a Certification Plugin",
+		Short:     fmt.Sprintf("Run a Certification Plugin. Choose from: %s", validArgs()),
 		ValidArgs: validArgs(),
 		Args: cobra.MatchAll(
 			cobra.ExactArgs(1),

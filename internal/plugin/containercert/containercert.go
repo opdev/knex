@@ -21,7 +21,7 @@ func (p *containerCertificationPlugin) Register() error {
 }
 
 func (p *containerCertificationPlugin) Run() error {
-	fmt.Println("Container Certification is Running")
+	fmt.Printf("%s is Running\n", p.Name())
 	return nil
 }
 
