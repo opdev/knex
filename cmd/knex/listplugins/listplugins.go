@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/redhat-openshift-ecosystem/knex/plugin"
+	"github.com/opdev/knex/plugin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

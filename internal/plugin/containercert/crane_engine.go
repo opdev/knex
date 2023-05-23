@@ -21,11 +21,11 @@ import (
 
 	"github.com/go-logr/logr"
 
-	"github.com/redhat-openshift-ecosystem/knex/internal/authn"
-	"github.com/redhat-openshift-ecosystem/knex/internal/log"
-	"github.com/redhat-openshift-ecosystem/knex/internal/plugin/containercert/pyxis"
-	"github.com/redhat-openshift-ecosystem/knex/internal/rpm"
-	"github.com/redhat-openshift-ecosystem/knex/types"
+	"github.com/opdev/knex/internal/authn"
+	"github.com/opdev/knex/internal/log"
+	"github.com/opdev/knex/internal/plugin/containercert/pyxis"
+	"github.com/opdev/knex/internal/rpm"
+	"github.com/opdev/knex/types"
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 
 	"github.com/google/go-containerregistry/pkg/crane"

@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/redhat-openshift-ecosystem/knex/internal/log"
-	"github.com/redhat-openshift-ecosystem/knex/types"
+	"github.com/opdev/knex/internal/log"
+	"github.com/opdev/knex/types"
 
 	"github.com/go-logr/logr"
 )

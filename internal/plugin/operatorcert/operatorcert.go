@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Masterminds/semver/v3"
-	// "github.com/redhat-openshift-ecosystem/knex/plugin"
+	// "github.com/opdev/knex/plugin"
 
 	"github.com/spf13/viper"
 )

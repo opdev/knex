@@ -6,7 +6,7 @@ import (
 
 	"github.com/bombsimon/logrusr/v4"
 	"github.com/go-logr/logr"
-	"github.com/redhat-openshift-ecosystem/knex/cmd/knex/root"
+	"github.com/opdev/knex/cmd/knex/root"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )

@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/redhat-openshift-ecosystem/knex/internal/plugin/containercert/policy"
-	"github.com/redhat-openshift-ecosystem/knex/plugin"
-	"github.com/redhat-openshift-ecosystem/knex/types"
+	"github.com/opdev/knex/internal/plugin/containercert/policy"
+	"github.com/opdev/knex/plugin"
+	"github.com/opdev/knex/types"
 	"github.com/spf13/viper"
 )
 

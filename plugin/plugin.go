@@ -5,7 +5,7 @@ import (
 	"regexp"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/redhat-openshift-ecosystem/knex/types"
+	"github.com/opdev/knex/types"
 	"github.com/spf13/viper"
 )
 

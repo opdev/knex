@@ -5,11 +5,11 @@ import (
 	"context"
 
 	// Plugin initialization
-	_ "github.com/redhat-openshift-ecosystem/knex/internal/plugin/containercert"
-	// _ "github.com/redhat-openshift-ecosystem/knex/internal/plugin/operatorcert"
+	_ "github.com/opdev/knex/internal/plugin/containercert"
+	// _ "github.com/opdev/knex/internal/plugin/operatorcert"
 
-	"github.com/redhat-openshift-ecosystem/knex/cmd/knex/listplugins"
-	"github.com/redhat-openshift-ecosystem/knex/cmd/knex/run"
+	"github.com/opdev/knex/cmd/knex/listplugins"
+	"github.com/opdev/knex/cmd/knex/run"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

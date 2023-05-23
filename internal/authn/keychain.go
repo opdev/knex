@@ -12,7 +12,7 @@ import (
 	craneauthn "github.com/google/go-containerregistry/pkg/authn"
 	"github.com/google/go-containerregistry/pkg/name"
 
-	"github.com/redhat-openshift-ecosystem/knex/internal/log"
+	"github.com/opdev/knex/internal/log"
 )
 
 type preflightKeychain struct {

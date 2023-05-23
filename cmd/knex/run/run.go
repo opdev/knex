@@ -7,8 +7,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/redhat-openshift-ecosystem/knex/plugin"
-	"github.com/redhat-openshift-ecosystem/knex/types"
+	"github.com/opdev/knex/plugin"
+	"github.com/opdev/knex/types"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

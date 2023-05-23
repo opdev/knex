@@ -3,7 +3,7 @@ package pyxis
 import (
 	"time"
 
-	"github.com/redhat-openshift-ecosystem/knex/types"
+	"github.com/opdev/knex/types"
 )
 
 type CertificationInput struct {
