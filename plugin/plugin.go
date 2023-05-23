@@ -5,6 +5,7 @@ import (
 	"regexp"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/redhat-openshift-ecosystem/knex/types"
 	"github.com/spf13/viper"
 )
 
@@ -53,6 +54,7 @@ type Plugin interface {
 	// Preflight's Runtime.Config is internal now so it won't work
 	// for this.
 	Init(*viper.Viper) error
+	types.CheckEngine
 }
 
 func ensurePluginNameMeetsStandards(name string) error {

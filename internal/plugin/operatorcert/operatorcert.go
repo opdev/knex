@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/redhat-openshift-ecosystem/knex/plugin"
+	// "github.com/redhat-openshift-ecosystem/knex/plugin"
+
 	"github.com/spf13/viper"
 )
 
-func init() {
-	plugin.Register("check-operator", NewPlugin())
-}
+// func init() {
+// 	plugin.Register("check-operator", NewPlugin())
+// }
 
 type plug struct{}
 
