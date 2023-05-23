@@ -11,7 +11,7 @@ import (
 	"time"
 
 	v1 "github.com/google/go-containerregistry/pkg/v1"
-	"github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/version"
 )
 
 // CheckEngine defines the functionality necessary to run all checks for a policy,
@@ -23,7 +23,7 @@ type CheckEngine interface {
 	// execution itself.
 	ExecuteChecks(context.Context) error
 	// Results returns the outcome of executing all checks.
-	Results(context.Context) certification.Results
+	Results(context.Context) Results
 }
 
 // Check as an interface containing all methods necessary
@@ -55,15 +55,15 @@ type Result struct {
 	ElapsedTime time.Duration
 }
 
-// type Results struct {
-// 	TestedImage       string
-// 	PassedOverall     bool
-// 	TestedOn          OpenshiftClusterVersion
-// 	CertificationHash string
-// 	Passed            []Result
-// 	Failed            []Result
-// 	Errors            []Result
-// }
+type Results struct {
+	TestedImage       string
+	PassedOverall     bool
+	TestedOn          OpenshiftClusterVersion
+	CertificationHash string
+	Passed            []Result
+	Failed            []Result
+	Errors            []Result
+}
 
 // Metadata contains useful information regarding the check.
 type Metadata struct {
@@ -113,7 +113,7 @@ type ResponseFormatter interface {
 	FileExtension() string
 	// Format takes Results, formats it as needed, and returns the formatted
 	// results ready to write as a byte slice.
-	Format(context.Context, certification.Results) (response []byte, formattingError error)
+	Format(context.Context, Results) (response []byte, formattingError error)
 }
 
 // ResultWriter defines methods associated with writing check results.
@@ -125,4 +125,32 @@ type ResultWriter interface {
 // ResultSubmitter defines methods associated with submitting results to Red HAt.
 type ResultSubmitter interface {
 	Submit(context.Context) error
+}
+
+// UserResponse is the standard user-facing response.
+type UserResponse struct {
+	Image             string                 `json:"image" xml:"image"`
+	Passed            bool                   `json:"passed" xml:"passed"`
+	CertificationHash string                 `json:"certification_hash,omitempty" xml:"certification_hash,omitempty"`
+	LibraryInfo       version.VersionContext `json:"test_library" xml:"test_library"`
+	Results           resultsText            `json:"results" xml:"results"`
+}
+
+// resultsText represents the results of check execution against the asset.
+type resultsText struct {
+	Passed []checkExecutionInfo `json:"passed" xml:"passed"`
+	Failed []checkExecutionInfo `json:"failed" xml:"failed"`
+	Errors []checkExecutionInfo `json:"errors" xml:"errors"`
+}
+
+// checkExecutionInfo contains all possible output fields that a user might see in their result.
+// Empty fields will be omitted.
+type checkExecutionInfo struct {
+	Name             string  `json:"name,omitempty" xml:"name,omitempty"`
+	ElapsedTime      float64 `json:"elapsed_time" xml:"elapsed_time"`
+	Description      string  `json:"description,omitempty" xml:"description,omitempty"`
+	Help             string  `json:"help,omitempty" xml:"help,omitempty"`
+	Suggestion       string  `json:"suggestion,omitempty" xml:"suggestion,omitempty"`
+	KnowledgeBaseURL string  `json:"knowledgebase_url,omitempty" xml:"knowledgebase_url,omitempty"`
+	CheckURL         string  `json:"check_url,omitempty" xml:"check_url,omitempty"`
 }

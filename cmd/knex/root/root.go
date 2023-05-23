@@ -3,7 +3,6 @@ package root
 
 import (
 	"context"
-	"fmt"
 
 	// Plugin initialization
 	_ "github.com/redhat-openshift-ecosystem/knex/internal/plugin/containercert"
@@ -23,7 +22,6 @@ func NewCommand(
 		Use:     "knex",
 		Short:   "Pluggable Certification",
 		Version: "0.0.0",
-		RunE:    func(cmd *cobra.Command, args []string) error { fmt.Println("rootCmd executed"); return nil },
 	}
 
 	cmd.AddCommand(listplugins.NewCommand(ctx, config))

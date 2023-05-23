@@ -8,8 +8,7 @@ import (
 	"os"
 
 	"github.com/redhat-openshift-ecosystem/knex/plugin"
-	"github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
-	"github.com/redhat-openshift-ecosystem/openshift-preflight/formatters"
+	"github.com/redhat-openshift-ecosystem/knex/types"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -90,8 +89,10 @@ func run(
 	return nil
 }
 
+type FormatterFunc = func(context.Context, types.Results) (response []byte, formattingError error)
+
 // Just as poc formatter, borrowed from preflight's library docs
-var formatAsText formatters.FormatterFunc = func(ctx context.Context, r certification.Results) (response []byte, formattingError error) {
+var formatAsText FormatterFunc = func(ctx context.Context, r types.Results) (response []byte, formattingError error) {
 	b := []byte{}
 	for _, v := range r.Passed {
 		t := v.ElapsedTime.Milliseconds()

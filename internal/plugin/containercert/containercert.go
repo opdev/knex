@@ -6,7 +6,7 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/redhat-openshift-ecosystem/knex/plugin"
-	"github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
+	"github.com/redhat-openshift-ecosystem/knex/types"
 	"github.com/spf13/viper"
 )
 
@@ -16,6 +16,8 @@ func init() {
 
 type plug struct {
 	fileWriter
+
+	image string
 }
 
 func NewPlugin() *plug {
@@ -37,6 +39,7 @@ func (p *plug) Name() string {
 
 func (p *plug) Init(cfg *viper.Viper) error {
 	fmt.Println("Init called")
+	p.image = "quay.io/opdev/simple-demo-operator:latest" // placeholder for testing
 	return nil
 }
 
@@ -51,8 +54,8 @@ func (p *plug) ExecuteChecks(_ context.Context) error {
 	return nil
 }
 
-func (p *plug) Results(_ context.Context) certification.Results {
-	return certification.Results{}
+func (p *plug) Results(_ context.Context) types.Results {
+	return types.Results{}
 }
 
 func (p *plug) Submit(_ context.Context) error {

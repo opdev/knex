@@ -7,6 +7,9 @@ import (
 
 // Original Source:
 // https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/internal/runtime/result_writer.go
+// Note(Jose): I don't think this needs to live here. This is an application
+// dependency, so this probably should be passed into the plugin as a dependency, or
+// invoked at the top level.
 
 // fileWriter implements a ResultWriter for use at preflight runtime.
 type fileWriter struct {
