@@ -7,6 +7,7 @@ package types
 
 import (
 	"context"
+	"io"
 	"time"
 
 	v1 "github.com/google/go-containerregistry/pkg/v1"
@@ -112,4 +113,15 @@ type ResponseFormatter interface {
 	// Format takes Results, formats it as needed, and returns the formatted
 	// results ready to write as a byte slice.
 	Format(context.Context, Results) (response []byte, formattingError error)
+}
+
+// ResultWriter defines methods associated with writing check results.
+type ResultWriter interface {
+	OpenFile(name string) (io.WriteCloser, error)
+	io.WriteCloser
+}
+
+// ResultSubmitter defines methods associated with submitting results to Red HAt.
+type ResultSubmitter interface {
+	Submit(context.Context) error
 }

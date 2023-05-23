@@ -38,12 +38,6 @@ func Register(name string, plugin Plugin) {
 }
 
 type Plugin interface {
-	// Name identifies the plugin. Should be a formal definition
-	// (e.g. "My Plugin")
-	Name() string
-	Version() semver.Version
-	// Run executes the plugin.
-	Run() error
 	// Init is called before all Execution, allowing a plugin to
 	// configure itself informed by the Preflight configuration.
 	//
@@ -54,7 +48,17 @@ type Plugin interface {
 	// Preflight's Runtime.Config is internal now so it won't work
 	// for this.
 	Init(*viper.Viper) error
+	// Name identifies the plugin. Should be a formal definition
+	// (e.g. "My Plugin")
+	Name() string
+	Version() semver.Version
+	// Run executes the plugin.
+	Run() error
+
+	// Plumbing, allowing for standardized execution of a plugin.
 	types.CheckEngine
+	types.ResultSubmitter
+	types.ResultWriter
 }
 
 func ensurePluginNameMeetsStandards(name string) error {
