@@ -15,10 +15,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// func init() {
-// 	cobra.OnInitialize()
-// }
-
 func NewCommand(
 	ctx context.Context,
 	config *viper.Viper,

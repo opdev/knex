@@ -3,6 +3,9 @@ package plugin
 import (
 	"fmt"
 	"regexp"
+
+	"github.com/Masterminds/semver/v3"
+	"github.com/spf13/viper"
 )
 
 var registeredPlugins map[string]Plugin = make(map[string]Plugin)
@@ -34,8 +37,22 @@ func Register(name string, plugin Plugin) {
 }
 
 type Plugin interface {
+	// Name identifies the plugin. Should be a formal definition
+	// (e.g. "My Plugin")
 	Name() string
+	Version() semver.Version
+	// Run executes the plugin.
 	Run() error
+	// Init is called before all Execution, allowing a plugin to
+	// configure itself informed by the Preflight configuration.
+	//
+	// Note(Jose): this uses Viper for this PoC but ideally we would
+	// have a concrete config so that plugin developers can know
+	// what to expect from this.
+	//
+	// Preflight's Runtime.Config is internal now so it won't work
+	// for this.
+	Init(*viper.Viper) error
 }
 
 func ensurePluginNameMeetsStandards(name string) error {

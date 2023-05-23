@@ -26,7 +26,7 @@ func listPlugins() error {
 	fmt.Println("listing plugins")
 	registered := plugin.RegisteredPlugins()
 	for k, v := range registered {
-		fmt.Printf(`Plugin %s is registered at entrypoint "%s"`, v.Name(), k)
+		fmt.Printf("Plugin '%s' at version %s is registered at entrypoint '%s'\n", v.Name(), v.Version(), k)
 	}
 
 	return nil

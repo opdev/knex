@@ -3,6 +3,7 @@ module github.com/redhat-openshift-ecosystem/knex
 go 1.20
 
 require (
+	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/google/go-containerregistry v0.14.0
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230519141939-2ca0b0aba5c2
 	github.com/spf13/cobra v1.7.0
