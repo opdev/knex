@@ -77,7 +77,10 @@ func run(
 		return err
 	}
 
-	out.Write(textResults)
+	_, err = out.Write(textResults)
+	if err != nil {
+		fmt.Println("Err couldn't write output")
+	}
 
 	if config.GetBool("submit") {
 		if err := plugin.Submit(ctx); err != nil {

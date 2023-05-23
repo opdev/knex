@@ -23,7 +23,6 @@ import (
 
 	"github.com/redhat-openshift-ecosystem/knex/internal/authn"
 	"github.com/redhat-openshift-ecosystem/knex/internal/log"
-	"github.com/redhat-openshift-ecosystem/knex/internal/plugin/containercert/policy"
 	"github.com/redhat-openshift-ecosystem/knex/internal/plugin/containercert/pyxis"
 	"github.com/redhat-openshift-ecosystem/knex/internal/rpm"
 	"github.com/redhat-openshift-ecosystem/knex/types"
@@ -644,80 +643,55 @@ func retryOnceAfter(t time.Duration) crane.Option {
 	}
 }
 
-func New(ctx context.Context,
-	image string,
-	checks []types.Check,
-	dockerconfig string,
-	isScratch bool,
-	insecure bool,
-	platform string,
-) (*CraneEngine, error) {
-	return &CraneEngine{
-		DockerConfig: dockerconfig,
-		Image:        image,
-		Checks:       checks,
-		IsScratch:    isScratch,
-		Platform:     platform,
-		Insecure:     insecure,
-	}, nil
-}
+// // ContainerCheckConfig contains configuration relevant to an individual check's execution.
+// type ContainerCheckConfig struct {
+// 	DockerConfig, PyxisAPIToken, CertificationProjectID string
+// }
 
-// OperatorCheckConfig contains configuration relevant to an individual check's execution.
-type OperatorCheckConfig struct {
-	ScorecardImage, ScorecardWaitTime, ScorecardNamespace, ScorecardServiceAccount string
-	IndexImage, DockerConfig, Channel                                              string
-	Kubeconfig                                                                     []byte
-}
+// // InitializeContainerChecks returns the appropriate checks for policy p given cfg.
+// func InitializeContainerChecks(ctx context.Context, p policy.Policy, cfg ContainerCheckConfig) ([]types.Check, error) {
+// 	switch p {
+// 	case policy.PolicyContainer:
+// 		return []types.Check{
+// 			&policy.HasLicenseCheck{},
+// 			// 	policy.NewHasUniqueTagCheck(cfg.DockerConfig),
+// 			// 	&policy.MaxLayersCheck{},
+// 			// 	&policy.HasNoProhibitedPackagesCheck{},
+// 			// 	&policy.HasRequiredLabelsCheck{},
+// 			// 	&policy.RunAsNonRootCheck{},
+// 			// 	&policy.HasModifiedFilesCheck{},
+// 			// 	policy.NewBasedOnUbiCheck(pyxis.NewPyxisClient(
+// 			// 		check.DefaultPyxisHost,
+// 			// 		cfg.PyxisAPIToken,
+// 			// 		cfg.CertificationProjectID,
+// 			// 		&http.Client{Timeout: 60 * time.Second})),
+// 		}, nil
+// 	case policy.PolicyRoot:
+// 		return []types.Check{
+// 			&policy.HasLicenseCheck{},
+// 			// policy.NewHasUniqueTagCheck(cfg.DockerConfig),
+// 			// &policy.MaxLayersCheck{},
+// 			// &policy.HasNoProhibitedPackagesCheck{},
+// 			// &policy.HasRequiredLabelsCheck{},
+// 			// &policy.HasModifiedFilesCheck{},
+// 			// policy.NewBasedOnUbiCheck(pyxis.NewPyxisClient(
+// 			// 	check.DefaultPyxisHost,
+// 			// 	cfg.PyxisAPIToken,
+// 			// 	cfg.CertificationProjectID,
+// 			// 	&http.Client{Timeout: 60 * time.Second})),
+// 		}, nil
+// 	case policy.PolicyScratch:
+// 		return []types.Check{
+// 			&policy.HasLicenseCheck{},
+// 			// policy.NewHasUniqueTagCheck(cfg.DockerConfig),
+// 			// &policy.MaxLayersCheck{},
+// 			// &policy.HasRequiredLabelsCheck{},
+// 			// &policy.RunAsNonRootCheck{},
+// 		}, nil
+// 	}
 
-// ContainerCheckConfig contains configuration relevant to an individual check's execution.
-type ContainerCheckConfig struct {
-	DockerConfig, PyxisAPIToken, CertificationProjectID string
-}
-
-// InitializeContainerChecks returns the appropriate checks for policy p given cfg.
-func InitializeContainerChecks(ctx context.Context, p policy.Policy, cfg ContainerCheckConfig) ([]types.Check, error) {
-	switch p {
-	case policy.PolicyContainer:
-		return []types.Check{
-			&policy.HasLicenseCheck{},
-			// 	policy.NewHasUniqueTagCheck(cfg.DockerConfig),
-			// 	&policy.MaxLayersCheck{},
-			// 	&policy.HasNoProhibitedPackagesCheck{},
-			// 	&policy.HasRequiredLabelsCheck{},
-			// 	&policy.RunAsNonRootCheck{},
-			// 	&policy.HasModifiedFilesCheck{},
-			// 	policy.NewBasedOnUbiCheck(pyxis.NewPyxisClient(
-			// 		check.DefaultPyxisHost,
-			// 		cfg.PyxisAPIToken,
-			// 		cfg.CertificationProjectID,
-			// 		&http.Client{Timeout: 60 * time.Second})),
-		}, nil
-	case policy.PolicyRoot:
-		return []types.Check{
-			&policy.HasLicenseCheck{},
-			// policy.NewHasUniqueTagCheck(cfg.DockerConfig),
-			// &policy.MaxLayersCheck{},
-			// &policy.HasNoProhibitedPackagesCheck{},
-			// &policy.HasRequiredLabelsCheck{},
-			// &policy.HasModifiedFilesCheck{},
-			// policy.NewBasedOnUbiCheck(pyxis.NewPyxisClient(
-			// 	check.DefaultPyxisHost,
-			// 	cfg.PyxisAPIToken,
-			// 	cfg.CertificationProjectID,
-			// 	&http.Client{Timeout: 60 * time.Second})),
-		}, nil
-	case policy.PolicyScratch:
-		return []types.Check{
-			&policy.HasLicenseCheck{},
-			// policy.NewHasUniqueTagCheck(cfg.DockerConfig),
-			// &policy.MaxLayersCheck{},
-			// &policy.HasRequiredLabelsCheck{},
-			// &policy.RunAsNonRootCheck{},
-		}, nil
-	}
-
-	return nil, fmt.Errorf("provided container policy %s is unknown", p)
-}
+// 	return nil, fmt.Errorf("provided container policy %s is unknown", p)
+// }
 
 // // makeCheckList returns a list of check names.
 // func makeCheckList(checks []types.Check) []string {
