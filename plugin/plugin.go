@@ -52,11 +52,13 @@ type Plugin interface {
 	// (e.g. "My Plugin")
 	Name() string
 	Version() semver.Version
-	// Run executes the plugin.
-	Run() error
+	// Run executes the plugin. Leaving commented for now. Using an arbitrary "run" method like this
+	// may be worth considering if existing structured lements like the Check Engine don't work for this use case.
+	// Run() error
 
 	// Plumbing, allowing for standardized execution of a plugin.
 	types.CheckEngine
+	// Invoked if the user requested submissions.
 	types.ResultSubmitter
 	types.ResultWriter
 }

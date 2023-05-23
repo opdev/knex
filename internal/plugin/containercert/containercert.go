@@ -28,11 +28,6 @@ func (p *plug) Register() error {
 	return nil
 }
 
-func (p *plug) Run() error {
-	fmt.Printf("%s is Running\n", p.Name())
-	return nil
-}
-
 func (p *plug) Name() string {
 	return "Container Certification"
 }
