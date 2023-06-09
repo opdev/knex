@@ -7,7 +7,7 @@ require (
 	github.com/bombsimon/logrusr/v4 v4.0.0
 	github.com/go-logr/logr v1.2.4
 	github.com/google/go-containerregistry v0.15.2
-	github.com/opdev/container-certification v0.0.0-20230609181000-a0ab4b04755e
+	github.com/opdev/container-certification v0.0.0-20230609204314-cbf79f6a87c3
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230523134535-51af09a44662
 	github.com/sirupsen/logrus v1.9.2
 	github.com/spf13/cobra v1.7.0
@@ -37,12 +37,14 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
+	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/vbatts/tar-split v0.11.3 // indirect
+	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/sync v0.2.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
