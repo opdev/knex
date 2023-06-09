@@ -185,6 +185,10 @@ github.com/opdev/container-certification v0.0.0-20230609205331-baf56cce3e24 h1:d
 github.com/opdev/container-certification v0.0.0-20230609205331-baf56cce3e24/go.mod h1:j9yH2T9+/iC/GZCaynvVfpqAJG/0Nob+63EGVIEsLZo=
 github.com/opdev/container-certification v0.0.0-20230609210755-68ba53e38239 h1:Ox5pnY2tpAOUAuOVMB0NrjO4j0pMkuvyRo4UePRmtN4=
 github.com/opdev/container-certification v0.0.0-20230609210755-68ba53e38239/go.mod h1:Vwe5pHM8SioOdq1xctm1W2Ra48o22sExHO92pidoBss=
+github.com/opdev/container-certification v0.0.0-20230609211848-417950aeefcb h1:rF7tBJpOPo0wDWFPqj3mHLnUEQKyqdM50X0AnbbCcOc=
+github.com/opdev/container-certification v0.0.0-20230609211848-417950aeefcb/go.mod h1:Vwe5pHM8SioOdq1xctm1W2Ra48o22sExHO92pidoBss=
+github.com/opdev/container-certification v0.0.0-20230609212136-58dd98825d06 h1:6Ugg35yIHaiXD1gQ1nowXzW+TkUSEa74kx+zwNFfV50=
+github.com/opdev/container-certification v0.0.0-20230609212136-58dd98825d06/go.mod h1:Vwe5pHM8SioOdq1xctm1W2Ra48o22sExHO92pidoBss=
 github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=
 github.com/opencontainers/go-digest v1.0.0/go.mod h1:0JzlMkj0TRzQZfJkVvzbP0HBR3IKzErnv2BNG4W4MAM=
 github.com/opencontainers/image-spec v1.1.0-rc3 h1:fzg1mXZFj8YdPeNkRXMg+zb88BFV0Ys52cJydRwBkb8=
