@@ -5,8 +5,7 @@ import (
 	"context"
 
 	// Plugin initialization
-	_ "github.com/opdev/knex/internal/plugin/containercert"
-	// _ "github.com/opdev/knex/internal/plugin/operatorcert"
+	_ "github.com/opdev/container-certification/plugin"
 
 	"github.com/opdev/knex/cmd/knex/listplugins"
 	"github.com/opdev/knex/cmd/knex/run"

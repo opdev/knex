@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/opdev/knex/plugin"
+	"github.com/opdev/knex/plugin/v0"
 	"github.com/opdev/knex/types"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

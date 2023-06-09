@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/opdev/knex/plugin"
+	"github.com/opdev/knex/plugin/v0"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
