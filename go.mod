@@ -7,7 +7,7 @@ require (
 	github.com/bombsimon/logrusr/v4 v4.0.0
 	github.com/go-logr/logr v1.2.4
 	github.com/google/go-containerregistry v0.15.2
-	github.com/opdev/container-certification v0.0.0-20230609204314-cbf79f6a87c3
+	github.com/opdev/container-certification v0.0.0-20230609205331-baf56cce3e24
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230523134535-51af09a44662
 	github.com/sirupsen/logrus v1.9.2
 	github.com/spf13/cobra v1.7.0
