@@ -46,7 +46,10 @@ type Plugin interface {
 	// Args here will represent remaining positional arguments to be parsed
 	// by the plugin. It may be a good practice to use the cobra PositionalArgs
 	// function definition as a guideline for how to treat this slice.
-	Init(config *viper.Viper, args []string) error
+	Init(
+		runtimeConfiguration RuntimeConfiguration,
+		config *viper.Viper,
+		args []string) error
 	// Name identifies the plugin. Should be a formal definition
 	// (e.g. "My Plugin")
 	Name() string
