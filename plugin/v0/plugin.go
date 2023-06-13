@@ -40,18 +40,17 @@ func Register(name string, plugin Plugin) {
 
 type Plugin interface {
 	// Init is called before all Execution, allowing a plugin to
-	// configure itself informed by the Preflight configuration.
+	// configure itself informed by the configuration passed in by
+	// the user, and by preflight itself.
 	//
-	// Note(Jose): this uses Viper for this PoC but ideally we would
-	// have a concrete config so that plugin developers can know
-	// what to expect from this.
-	//
-	// Preflight's Runtime.Config is internal now so it won't work
-	// for this.
+	// Args here will represent remaining positional arguments to be parsed
+	// by the plugin. It may be a good practice to use the cobra PositionalArgs
+	// function definition as a guideline for how to treat this slice.
 	Init(config *viper.Viper, args []string) error
 	// Name identifies the plugin. Should be a formal definition
 	// (e.g. "My Plugin")
 	Name() string
+	// Version is a semantic version representation for your plugin.
 	Version() semver.Version
 	// BindFlags binds a plugin's flags to the runtime execution.
 	BindFlags(*pflag.FlagSet) *pflag.FlagSet
