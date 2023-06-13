@@ -13,27 +13,37 @@ import (
 	"github.com/spf13/viper"
 )
 
-func Newcommand(
+func NewCommand(
 	ctx context.Context,
 	config *viper.Viper,
 ) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:       "run",
-		Short:     fmt.Sprintf("Run a Certification Plugin. Choose from: %s", validArgs()),
-		ValidArgs: validArgs(),
-		Args: cobra.MatchAll(
-			cobra.ExactArgs(1),
-			// This isn't going to work if we plan on allowing plugins to accept arguments/flags.
-			cobra.OnlyValidArgs,
-		),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return run(ctx, args[0], config)
-		},
+		Use:   "run",
+		Short: fmt.Sprintf("Run a Certification Plugin. Choose from: %s", validArgs()),
+		// ValidArgs: validArgs(),
+		// Args: cobra.MatchAll(
+		// 	cobra.ExactArgs(1),
+		// 	// This isn't going to work if we plan on allowing plugins to accept arguments/flags.
+		// 	cobra.OnlyValidArgs,
+		// ),
+		// RunE: func(cmd *cobra.Command, args []string) error {
+		// 	return run(args, ctx, args[0], config)
+		// },
+	}
+
+	for plinvoke, pl := range plugin.RegisteredPlugins() {
+		plcmd := plugin.NewCommand(ctx, plinvoke, pl)
+		plcmd.RunE = func(cmd *cobra.Command, args []string) error {
+			return run(args, ctx, plinvoke, config)
+		}
+		cmd.AddCommand(plcmd)
 	}
 
 	return cmd
 }
 
+// validArgs returns the list of registered plugins by their invocation name.
+// E.g. "check-container" for Container Certification.
 func validArgs() []string {
 	registered := plugin.RegisteredPlugins()
 	validArgs := make([]string, 0, len(registered))
@@ -44,6 +54,7 @@ func validArgs() []string {
 }
 
 func run(
+	args []string,
 	ctx context.Context,
 	pluginName string,
 	config *viper.Viper,

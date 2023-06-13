@@ -24,7 +24,8 @@ func NewCommand(
 	}
 
 	cmd.AddCommand(listplugins.NewCommand(ctx, config))
-	cmd.AddCommand(run.Newcommand(ctx, config))
+	cmd.AddCommand(run.NewCommand(ctx, config))
+
 	return cmd
 }
 

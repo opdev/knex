@@ -6,6 +6,7 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/opdev/knex/types"
+	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
@@ -52,6 +53,8 @@ type Plugin interface {
 	// (e.g. "My Plugin")
 	Name() string
 	Version() semver.Version
+	// BindFlags binds a plugin's flags to the runtime execution.
+	BindFlags(*pflag.FlagSet) *pflag.FlagSet
 	// Run executes the plugin. Leaving commented for now. Using an arbitrary "run" method like this
 	// may be worth considering if existing structured lements like the Check Engine don't work for this use case.
 	// Run() error
