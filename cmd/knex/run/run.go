@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/opdev/knex/plugin/v0"
 	"github.com/opdev/knex/types"
@@ -18,21 +19,11 @@ func NewCommand(
 	config *viper.Viper,
 ) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "run",
-		Short: fmt.Sprintf("Run a Certification Plugin. Choose from: %s", validArgs()),
-		// ValidArgs: validArgs(),
-		// Args: cobra.MatchAll(
-		// 	cobra.ExactArgs(1),
-		// 	// This isn't going to work if we plan on allowing plugins to accept arguments/flags.
-		// 	cobra.OnlyValidArgs,
-		// ),
-		// RunE: func(cmd *cobra.Command, args []string) error {
-		// 	return run(args, ctx, args[0], config)
-		// },
+		Use: "run",
 	}
 
 	for plinvoke, pl := range plugin.RegisteredPlugins() {
-		plcmd := plugin.NewCommand(ctx, plinvoke, pl)
+		plcmd := plugin.NewCommand(ctx, config, plinvoke, pl)
 		plcmd.RunE = func(cmd *cobra.Command, args []string) error {
 			return run(args, ctx, plinvoke, config)
 		}
@@ -41,29 +32,21 @@ func NewCommand(
 
 	return cmd
 }
-
-// validArgs returns the list of registered plugins by their invocation name.
-// E.g. "check-container" for Container Certification.
-func validArgs() []string {
-	registered := plugin.RegisteredPlugins()
-	validArgs := make([]string, 0, len(registered))
-	for k, _ := range registered {
-		validArgs = append(validArgs, k)
-	}
-	return validArgs
-}
-
 func run(
 	args []string,
 	ctx context.Context,
 	pluginName string,
 	config *viper.Viper,
 ) error {
-	fmt.Println("Run invoked with plugin:", pluginName)
 	plugin := plugin.RegisteredPlugins()[pluginName]
 	fmt.Println("Running Plugin =>", plugin.Name(), plugin.Version())
-	defer fmt.Println("Plugin Complete", plugin.Name())
-	if err := plugin.Init(config); err != nil {
+
+	// Make the configuration look preflight-ish
+	config.SetEnvPrefix("pflt")
+	config.AutomaticEnv()
+	config.SetEnvKeyReplacer(strings.NewReplacer(`-`, `_`))
+
+	if err := plugin.Init(config, args); err != nil {
 		fmt.Println("ERR problem running init", err)
 		return err
 	}

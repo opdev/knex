@@ -48,7 +48,7 @@ type Plugin interface {
 	//
 	// Preflight's Runtime.Config is internal now so it won't work
 	// for this.
-	Init(*viper.Viper) error
+	Init(config *viper.Viper, args []string) error
 	// Name identifies the plugin. Should be a formal definition
 	// (e.g. "My Plugin")
 	Name() string
