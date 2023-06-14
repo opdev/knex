@@ -73,7 +73,6 @@ type Plugin interface {
 	types.CheckEngine
 	// Invoked if the user requested submissions.
 	types.ResultSubmitter
-	types.ResultWriter
 }
 
 func ensurePluginNameMeetsStandards(name string) error {

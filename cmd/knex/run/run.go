@@ -46,7 +46,7 @@ func NewCommand(
 	for plinvoke, pl := range plugin.RegisteredPlugins() {
 		plcmd := plugin.NewCommand(ctx, config, plinvoke, pl)
 		plcmd.RunE = func(cmd *cobra.Command, args []string) error {
-			return run(args, ctx, plinvoke, config)
+			return run(args, ctx, plinvoke, config, &types.ResultWriterFile{})
 		}
 		cmd.AddCommand(plcmd)
 	}
@@ -59,6 +59,7 @@ func run(
 	ctx context.Context,
 	pluginName string,
 	config *spfviper.Viper,
+	resultWriter types.ResultWriter,
 ) error {
 	// Manage outputs on behalf of the plugin. This must happen before the
 	// plugin init is called to prevent modifications to the viper configuration
@@ -99,6 +100,22 @@ func run(
 	config.AutomaticEnv()
 	config.SetEnvKeyReplacer(strings.NewReplacer(`-`, `_`))
 
+	// Writing Results, also borrowed from Preflight (RunPreflight, specifically)
+	// Fail early if we cannot write to the results path.
+	// TODO(Jose): The preflight version of this handles formatters, etc. Stubbed this out to .txt for PoC
+	resultsFilePath, err := artifactsWriter.WriteFile("results.txt", strings.NewReader(""))
+	if err != nil {
+		return err
+	}
+
+	resultsFile, err := resultWriter.OpenFile(resultsFilePath)
+	if err != nil {
+		return err
+	}
+
+	defer resultsFile.Close()
+	resultsOutputTarget := io.MultiWriter(os.Stdout, resultsFile)
+
 	// Run the plugin
 	plugin := plugin.RegisteredPlugins()[pluginName]
 	logger.Info("Calling plugin", "name", plugin.Name(), "version", plugin.Version())
@@ -114,21 +131,13 @@ func run(
 	}
 
 	results := plugin.Results(ctx)
-	f, err := plugin.OpenFile("results.json")
-	if err != nil {
-		logger.Error(err, "unable to open results file for writing")
-		return err
-	}
-	defer f.Close()
-	out := io.MultiWriter(os.Stdout, f)
-
 	textResults, err := formatAsText(ctx, results)
 	if err != nil {
 		logger.Error(err, "unable to format results")
 		return err
 	}
 
-	_, err = out.Write(textResults)
+	_, err = resultsOutputTarget.Write(textResults)
 	if err != nil {
 		logger.Error(err, "unable to write text results")
 	}
