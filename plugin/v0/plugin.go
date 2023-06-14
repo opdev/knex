@@ -11,8 +11,10 @@ import (
 	"github.com/spf13/viper"
 )
 
-var registeredPlugins map[string]Plugin = make(map[string]Plugin)
-var isNormalized = regexp.MustCompile(`^[a-z][a-z\-]+[a-z]$`).MatchString
+var (
+	registeredPlugins map[string]Plugin = make(map[string]Plugin)
+	isNormalized                        = regexp.MustCompile(`^[a-z][a-z\-]+[a-z]$`).MatchString
+)
 
 func RegisteredPlugins() map[string]Plugin {
 	rpCopy := map[string]Plugin{}

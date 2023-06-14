@@ -54,6 +54,7 @@ func NewCommand(
 
 	return cmd
 }
+
 func run(
 	args []string,
 	ctx context.Context,
