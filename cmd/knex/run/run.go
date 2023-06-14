@@ -76,6 +76,7 @@ func run(
 	if err == nil {
 		mw := io.MultiWriter(os.Stderr, logFile)
 		l.SetOutput(mw)
+		defer logFile.Close()
 	} else {
 		l.Infof("Failed to log to file, using default stderr")
 	}
