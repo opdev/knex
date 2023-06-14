@@ -63,7 +63,11 @@ type Plugin interface {
 	Name() string
 	// Version is a semantic version representation for your plugin.
 	Version() semver.Version
-	// BindFlags binds a plugin's flags to the runtime execution.
+	// BindFlags binds a plugin's flags to the runtime execution. The following
+	// flags should not be used by plugins as they're used by preflight itself.
+	// - loglevel
+	// - logfile
+	// - artifacts
 	BindFlags(*pflag.FlagSet) *pflag.FlagSet
 	// Run executes the plugin. Leaving commented for now. Using an arbitrary "run" method like this
 	// may be worth considering if existing structured lements like the Check Engine don't work for this use case.

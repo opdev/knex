@@ -6,16 +6,15 @@ import (
 
 	// Plugin initialization
 	_ "github.com/opdev/container-certification/plugin"
+	_ "github.com/opdev/plugin-template/plugin"
 
 	"github.com/opdev/knex/cmd/knex/listplugins"
 	"github.com/opdev/knex/cmd/knex/run"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 func NewCommand(
 	ctx context.Context,
-	config *viper.Viper,
 ) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "knex",
@@ -23,8 +22,8 @@ func NewCommand(
 		Version: "0.0.0",
 	}
 
-	cmd.AddCommand(listplugins.NewCommand(ctx, config))
-	cmd.AddCommand(run.NewCommand(ctx, config))
+	cmd.AddCommand(listplugins.NewCommand(ctx))
+	cmd.AddCommand(run.NewCommand(ctx))
 
 	return cmd
 }

@@ -14,19 +14,18 @@ func NewCommand(
 	invocation string,
 	pl Plugin,
 ) *cobra.Command {
-	cmd := &cobra.Command{
+	cmd := cobra.Command{
 		Use:     invocation,
-		Short:   fmt.Sprintf("%s at verions %s", pl.Name(), pl.Version().String()),
+		Short:   fmt.Sprintf("%s at version %s", pl.Name(), pl.Version().String()),
 		Version: pl.Version().String(),
 	}
 
 	pl.BindFlags(cmd.Flags())
-	if err := config.BindPFlags(cmd.Flags()); err != nil {
-		// TODO(komish): This throwing an error is problematic at the moment because
-		// we don't return an error, but we certainly can and just need to do additional parsing.
-		// at the point of call.
-		fmt.Println("unable to bind environment variables", err)
+	if err := config.BindPFlags(cmd.LocalFlags()); err != nil {
+		// Note(komish): This panics to help preflight detect if flag binding will actually work. This is still
+		// a runtime, check, though, and doesn't happen until we call the run subcommna.d
+		panic(fmt.Sprintf("fatal error attempting to bind plugin flags for plugin %s: %s", pl.Name(), err))
 	}
 
-	return cmd
+	return &cmd
 }

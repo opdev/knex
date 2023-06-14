@@ -6,12 +6,10 @@ import (
 
 	"github.com/opdev/knex/plugin/v0"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 func NewCommand(
 	ctx context.Context,
-	config *viper.Viper,
 ) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-plugins",

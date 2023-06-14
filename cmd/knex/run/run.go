@@ -24,30 +24,32 @@ const (
 
 func NewCommand(
 	ctx context.Context,
-	config *spfviper.Viper,
 ) *cobra.Command {
 	cmd := &cobra.Command{
 		Use: "run",
 	}
 
 	cmd.PersistentFlags().String("logfile", "", "Where the execution logfile will be written. (env: PFLT_LOGFILE)")
-	_ = config.BindPFlag("logfile", cmd.PersistentFlags().Lookup("logfile"))
-
 	cmd.PersistentFlags().String("loglevel", "", "The verbosity of the preflight tool itself. Ex. warn, debug, trace, info, error. (env: PFLT_LOGLEVEL)")
-	_ = config.BindPFlag("loglevel", cmd.PersistentFlags().Lookup("loglevel"))
-
 	cmd.PersistentFlags().String("artifacts", "", "Where check-specific artifacts will be written. (env: PFLT_ARTIFACTS)")
-	_ = config.BindPFlag("artifacts", cmd.PersistentFlags().Lookup("artifacts"))
 
-	config.SetDefault("logfile", DefaultLogFile)
-	config.SetDefault("loglevel", DefaultLogLevel)
-	config.SetDefault("artifacts", artifacts.DefaultArtifactsDir)
-
-	for plinvoke, pl := range plugin.RegisteredPlugins() {
-		plcmd := plugin.NewCommand(ctx, config, plinvoke, pl)
+	for i, p := range plugin.RegisteredPlugins() {
+		invocation := i
+		plug := p
+		config := spfviper.New()
+		plcmd := plugin.NewCommand(ctx, config, invocation, plug)
 		plcmd.RunE = func(cmd *cobra.Command, args []string) error {
-			return run(args, ctx, plinvoke, config, &types.ResultWriterFile{})
+			return run(ctx, args, invocation, config, &types.ResultWriterFile{})
 		}
+
+		// Configure the parent command's config bindings after the plugin has bound its flagset.
+		_ = config.BindPFlag("logfile", cmd.PersistentFlags().Lookup("logfile"))
+		_ = config.BindPFlag("loglevel", cmd.PersistentFlags().Lookup("loglevel"))
+		_ = config.BindPFlag("artifacts", cmd.PersistentFlags().Lookup("artifacts"))
+		config.SetDefault("logfile", DefaultLogFile)
+		config.SetDefault("loglevel", DefaultLogLevel)
+		config.SetDefault("artifacts", artifacts.DefaultArtifactsDir)
+
 		cmd.AddCommand(plcmd)
 	}
 
@@ -55,8 +57,8 @@ func NewCommand(
 }
 
 func run(
-	args []string,
 	ctx context.Context,
+	args []string,
 	pluginName string,
 	config *spfviper.Viper,
 	resultWriter types.ResultWriter,
