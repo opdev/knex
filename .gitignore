@@ -20,7 +20,6 @@ knex-*
 
 # Config files
 config.yaml
-
 # Log files
 *.log
 results.json
@@ -35,7 +34,7 @@ results-junit.xml
 *OlmSuiteCheck.json
 hashes.txt
 artifacts.tar
-
+artifacts/
 # E2E customzied env log file.
 sgol.txt
 

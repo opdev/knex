@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 
@@ -47,8 +48,13 @@ type Plugin interface {
 	// by the plugin. It may be a good practice to use the cobra PositionalArgs
 	// function definition as a guideline for how to treat this slice.
 	Init(
-		runtimeConfiguration RuntimeConfiguration,
+		// ctx will contain an initialized logger and artifacts writer at the time
+		// of Init.
+		ctx context.Context,
+		// config contains the parsed flag/environment, including those flag values
+		// provided by the plugin's BindFlags call.
 		config *viper.Viper,
+		// args contains positional arguments being passed to the plugin itself.
 		args []string) error
 	// Name identifies the plugin. Should be a formal definition
 	// (e.g. "My Plugin")

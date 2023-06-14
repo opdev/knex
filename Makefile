@@ -38,6 +38,10 @@ image-build:
 image-push:
 	$(IMAGE_BUILDER) push $(IMAGE_REPO)/knex:$(VERSION)
 
+.PHONY: update-plugin.container-cert
+update-plugin.container-cert:
+	go get github.com/opdev/container-certification
+
 .PHONY: test
 test:
 	go test -v $$(go list ./... | grep -v e2e) \
@@ -87,3 +91,4 @@ define go-install-tool
 GOBIN=$(PROJECT_DIR)/bin go install $(2) ;\
 }
 endef
+

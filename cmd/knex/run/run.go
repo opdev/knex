@@ -9,11 +9,18 @@ import (
 	"strings"
 
 	"github.com/bombsimon/logrusr/v4"
+	"github.com/go-logr/logr"
 	"github.com/opdev/knex/plugin/v0"
 	"github.com/opdev/knex/types"
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+)
+
+const (
+	DefaultLogFile  = "preflight.log"
+	DefaultLogLevel = "info"
 )
 
 func NewCommand(
@@ -32,6 +39,10 @@ func NewCommand(
 
 	cmd.PersistentFlags().String("artifacts", "", "Where check-specific artifacts will be written. (env: PFLT_ARTIFACTS)")
 	_ = config.BindPFlag("artifacts", cmd.PersistentFlags().Lookup("artifacts"))
+
+	viper.SetDefault("logfile", DefaultLogFile)
+	viper.SetDefault("loglevel", DefaultLogLevel)
+	viper.SetDefault("artifacts", artifacts.DefaultArtifactsDir)
 
 	for plinvoke, pl := range plugin.RegisteredPlugins() {
 		plcmd := plugin.NewCommand(ctx, config, plinvoke, pl)
@@ -53,11 +64,12 @@ func run(
 	// plugin init is called to prevent modifications to the viper configuration
 	// that's passed to it from bubbling upward to preflight's scope.
 	//
-	// This is borrowed from preflight's check PreRunE
+	// This is borrowed from preflight's check PreRunE with the intention of
+	// stuffing the logger and artifacts writer in the context to maintain
+	// compatibility with the existing container/operator certification.
 	l := logrus.New()
 	l.SetFormatter(&logrus.TextFormatter{DisableColors: true})
 
-	// set up logging
 	logname := config.GetString("logfile")
 	logFile, err := os.OpenFile(logname, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o600)
 	if err == nil {
@@ -71,20 +83,24 @@ func run(
 	}
 
 	logger := logrusr.New(l)
-	// TODO(Jose): finish wiring up the artifacts writing
-	runtimeConfiguration := plugin.RuntimeConfiguration{
-		Logger: &logger,
-	}
+	ctx = logr.NewContext(ctx, logger)
 
-	plugin := plugin.RegisteredPlugins()[pluginName]
-	fmt.Println("Running Plugin =>", plugin.Name(), plugin.Version())
+	artifactsWriter, err := artifacts.NewFilesystemWriter(artifacts.WithDirectory(config.GetString("artifacts")))
+	if err != nil {
+		return err
+	}
+	ctx = artifacts.ContextWithWriter(ctx, artifactsWriter)
 
 	// Make the configuration look preflight-ish
 	config.SetEnvPrefix("pflt")
 	config.AutomaticEnv()
 	config.SetEnvKeyReplacer(strings.NewReplacer(`-`, `_`))
 
-	if err := plugin.Init(runtimeConfiguration, config, args); err != nil {
+	// Run the plugin
+	plugin := plugin.RegisteredPlugins()[pluginName]
+	fmt.Println("Running Plugin =>", plugin.Name(), plugin.Version())
+
+	if err := plugin.Init(ctx, config, args); err != nil {
 		fmt.Println("ERR problem running init", err)
 		return err
 	}
