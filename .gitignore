@@ -35,6 +35,7 @@ results-junit.xml
 hashes.txt
 artifacts.tar
 artifacts/
+
 # E2E customzied env log file.
 sgol.txt
 
