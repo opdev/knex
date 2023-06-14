@@ -15,7 +15,7 @@ import (
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
+	spfviper "github.com/spf13/viper"
 )
 
 const (
@@ -25,7 +25,7 @@ const (
 
 func NewCommand(
 	ctx context.Context,
-	config *viper.Viper,
+	config *spfviper.Viper,
 ) *cobra.Command {
 	cmd := &cobra.Command{
 		Use: "run",
@@ -40,9 +40,9 @@ func NewCommand(
 	cmd.PersistentFlags().String("artifacts", "", "Where check-specific artifacts will be written. (env: PFLT_ARTIFACTS)")
 	_ = config.BindPFlag("artifacts", cmd.PersistentFlags().Lookup("artifacts"))
 
-	viper.SetDefault("logfile", DefaultLogFile)
-	viper.SetDefault("loglevel", DefaultLogLevel)
-	viper.SetDefault("artifacts", artifacts.DefaultArtifactsDir)
+	config.SetDefault("logfile", DefaultLogFile)
+	config.SetDefault("loglevel", DefaultLogLevel)
+	config.SetDefault("artifacts", artifacts.DefaultArtifactsDir)
 
 	for plinvoke, pl := range plugin.RegisteredPlugins() {
 		plcmd := plugin.NewCommand(ctx, config, plinvoke, pl)
@@ -58,7 +58,7 @@ func run(
 	args []string,
 	ctx context.Context,
 	pluginName string,
-	config *viper.Viper,
+	config *spfviper.Viper,
 ) error {
 	// Manage outputs on behalf of the plugin. This must happen before the
 	// plugin init is called to prevent modifications to the viper configuration
