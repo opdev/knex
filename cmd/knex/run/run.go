@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"strings"
 
@@ -85,7 +84,9 @@ func run(
 	}
 
 	logger := logrusr.New(l)
-	ctx = logr.NewContext(ctx, logger)
+
+	// Pass in a logger with addition keys/values to the plugin so we know the plugin emitted a log line.
+	ctx = logr.NewContext(ctx, logger.WithValues("emitter", "plugin"))
 
 	artifactsWriter, err := artifacts.NewFilesystemWriter(artifacts.WithDirectory(config.GetString("artifacts")))
 	if err != nil {
@@ -100,22 +101,22 @@ func run(
 
 	// Run the plugin
 	plugin := plugin.RegisteredPlugins()[pluginName]
-	fmt.Println("Running Plugin =>", plugin.Name(), plugin.Version())
+	logger.Info("Calling plugin", "name", plugin.Name(), "version", plugin.Version())
 
 	if err := plugin.Init(ctx, config, args); err != nil {
-		fmt.Println("ERR problem running init", err)
+		logger.Error(err, "unable to initialize plugin")
 		return err
 	}
 
 	if err := plugin.ExecuteChecks(ctx); err != nil {
-		fmt.Println("ERR problem running ExecuteChecks", err)
+		logger.Error(err, "unable to execute checks")
 		return err
 	}
 
 	results := plugin.Results(ctx)
 	f, err := plugin.OpenFile("results.json")
 	if err != nil {
-		fmt.Println("ERR problem opening results file", err)
+		logger.Error(err, "unable to open results file for writing")
 		return err
 	}
 	defer f.Close()
@@ -123,18 +124,18 @@ func run(
 
 	textResults, err := formatAsText(ctx, results)
 	if err != nil {
-		fmt.Println("ERR converting results to text", err)
+		logger.Error(err, "unable to format results")
 		return err
 	}
 
 	_, err = out.Write(textResults)
 	if err != nil {
-		fmt.Println("Err couldn't write output")
+		logger.Error(err, "unable to write text results")
 	}
 
 	if config.GetBool("submit") {
 		if err := plugin.Submit(ctx); err != nil {
-			log.Println("Err submitting", err)
+			logger.Error(err, "unable to call plugin submission")
 			return err
 		}
 	}
