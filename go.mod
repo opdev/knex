@@ -10,6 +10,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.9.5
 	github.com/onsi/gomega v1.27.7
 	github.com/opdev/container-certification v0.0.0-20230614182703-a2add246b4e0
+	github.com/opdev/helm-certification v0.0.0-20230811144517-4e1cc202b4c4
 	github.com/opdev/plugin-template v0.0.0-20230614203351-cd23b8d33ddc
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230523134535-51af09a44662
 	github.com/sirupsen/logrus v1.9.2

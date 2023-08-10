@@ -6,6 +6,7 @@ import (
 
 	// Plugin initialization
 	_ "github.com/opdev/container-certification/plugin"
+	_ "github.com/opdev/helm-certification/plugin"
 	_ "github.com/opdev/plugin-template/plugin"
 
 	"github.com/opdev/knex/cmd/knex/listplugins"
