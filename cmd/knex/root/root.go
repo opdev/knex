@@ -24,6 +24,7 @@ func NewCommand(
 
 	cmd.AddCommand(listplugins.NewCommand(ctx))
 	cmd.AddCommand(run.NewCommand(ctx))
+	cmd.AddCommand(run.NewBackwardsCompatCheckCommand(ctx))
 
 	return cmd
 }
