@@ -17,7 +17,7 @@ run:
 
 .PHONY: build
 build:
-	go build -o $(BINARY) cmd/knex/main.go
+	go build -o $(BINARY) -ldflags "-X github.com/opdev/knex/version.commit=$(VERSION) -X github.com/opdev/knex/version.version=$(RELEASE_TAG)" cmd/knex/main.go
 	@ls | grep -e '^knex$$' &> /dev/null
 
 .PHONY: build-multi-arch
