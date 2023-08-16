@@ -1,0 +1,46 @@
+name: Go
+
+on:
+  pull_request:
+    branches:
+    - main
+    - release-*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install system deps
+      run: 'sudo apt update && sudo apt install -y libgpgme-dev libbtrfs-dev libdevmapper-dev'
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version-file: go.mod
+
+    - name: Tidy
+      run: make tidy
+
+    - name: Vet
+      run: make vet
+
+    - name: Format
+      run: make fmt
+
+    - name: Run golangci linting checks
+      run: make lint
+
+    - name: Test
+      run: make cover
+
+# TODO: We can add this on when we are further along
+#    - name: Coveralls
+#      uses: coverallsapp/github-action@v2
+#      with:
+#        github-token: ${{ secrets.GITHUB_TOKEN }}
+#        file: coverage.out
+
+    - name: Build Multi-arch
+      run: make build-multi-arch

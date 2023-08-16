@@ -20,6 +20,18 @@ build:
 	go build -o $(BINARY) cmd/knex/main.go
 	@ls | grep -e '^knex$$' &> /dev/null
 
+.PHONY: build-multi-arch
+build-multi-arch: $(addprefix build-linux-,$(ARCHITECTURES))
+
+define ARCHITECTURE_template
+.PHONY: build-linux-$(1)
+build-linux-$(1):
+	GOOS=linux GOARCH=$(1) CGO_ENABLED=0 go build -o $(BINARY)-linux-$(1) -ldflags "-X github.com/opdev/knex/version.commit=$(VERSION) \
+				-X github.com/opdev/knex/version.version=$(RELEASE_TAG)" cmd/knex/main.go
+endef
+
+$(foreach arch,$(ARCHITECTURES),$(eval $(call ARCHITECTURE_template,$(arch))))
+
 .PHONY: fmt
 fmt: gofumpt
 	${GOFUMPT} -l -w .
