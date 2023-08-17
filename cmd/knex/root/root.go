@@ -4,9 +4,8 @@ package root
 import (
 	"context"
 
-	// Plugin initialization
-	_ "github.com/opdev/container-certification/plugin"
-	_ "github.com/opdev/plugin-template/plugin"
+	// register all plugins
+	_ "github.com/opdev/knex/plugin/registration"
 
 	"github.com/opdev/knex/cmd/knex/listplugins"
 	"github.com/opdev/knex/cmd/knex/run"
