@@ -32,6 +32,7 @@ func NewCommand(
 	cmd.PersistentFlags().String("logfile", "", "Where the execution logfile will be written. (env: PFLT_LOGFILE)")
 	cmd.PersistentFlags().String("loglevel", "", "The verbosity of the preflight tool itself. Ex. warn, debug, trace, info, error. (env: PFLT_LOGLEVEL)")
 	cmd.PersistentFlags().String("artifacts", "", "Where check-specific artifacts will be written. (env: PFLT_ARTIFACTS)")
+	cmd.PersistentFlags().BoolP("submit", "s", false, "Submit results to Red Hat if the called plugin supports it automated submission through this tool.")
 
 	for i, p := range plugin.RegisteredPlugins() {
 		invocation := i
@@ -46,9 +47,12 @@ func NewCommand(
 		_ = config.BindPFlag("logfile", cmd.PersistentFlags().Lookup("logfile"))
 		_ = config.BindPFlag("loglevel", cmd.PersistentFlags().Lookup("loglevel"))
 		_ = config.BindPFlag("artifacts", cmd.PersistentFlags().Lookup("artifacts"))
+		_ = config.BindPFlag("submit", cmd.PersistentFlags().Lookup("submit"))
+
 		config.SetDefault("logfile", DefaultLogFile)
 		config.SetDefault("loglevel", DefaultLogLevel)
 		config.SetDefault("artifacts", artifacts.DefaultArtifactsDir)
+		config.SetDefault("submit", false)
 
 		cmd.AddCommand(plcmd)
 	}
