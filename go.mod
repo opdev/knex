@@ -9,7 +9,7 @@ require (
 	github.com/google/go-containerregistry v0.15.2
 	github.com/onsi/ginkgo/v2 v2.9.5
 	github.com/onsi/gomega v1.27.7
-	github.com/opdev/container-certification v0.0.0-20230829185753-3632b7dc1712
+	github.com/opdev/container-certification v0.0.0-20230829210325-f2c39ce38060
 	github.com/opdev/plugin-template v0.0.0-20230614203351-cd23b8d33ddc
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230523134535-51af09a44662
 	github.com/sirupsen/logrus v1.9.2
