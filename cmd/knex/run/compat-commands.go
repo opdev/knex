@@ -26,15 +26,18 @@ func NewBackwardsCompatCheckCommand(ctx context.Context) *cobra.Command {
 	cmd.PersistentFlags().String("logfile", "", "Where the execution logfile will be written. (env: PFLT_LOGFILE)")
 	cmd.PersistentFlags().String("loglevel", "", "The verbosity of the preflight tool itself. Ex. warn, debug, trace, info, error. (env: PFLT_LOGLEVEL)")
 	cmd.PersistentFlags().String("artifacts", "", "Where check-specific artifacts will be written. (env: PFLT_ARTIFACTS)")
+	cmd.PersistentFlags().BoolP("submit", "s", false, "Submit results to Red Hat if the called plugin supports it automated submission through this tool.")
 
 	containerConfig := spfviper.New()
 	// Configure the parent command's config bindings after the plugin has bound its flagset.
 	_ = containerConfig.BindPFlag("logfile", cmd.PersistentFlags().Lookup("logfile"))
 	_ = containerConfig.BindPFlag("loglevel", cmd.PersistentFlags().Lookup("loglevel"))
 	_ = containerConfig.BindPFlag("artifacts", cmd.PersistentFlags().Lookup("artifacts"))
+	_ = containerConfig.BindPFlag("submit", cmd.PersistentFlags().Lookup("submit"))
 	containerConfig.SetDefault("logfile", DefaultLogFile)
 	containerConfig.SetDefault("loglevel", DefaultLogLevel)
 	containerConfig.SetDefault("artifacts", artifacts.DefaultArtifactsDir)
+	containerConfig.SetDefault("submit", false)
 
 	// Build out the Container Plugin
 	cmd.AddCommand(containerPlugin(ctx, containerConfig))
