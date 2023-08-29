@@ -189,6 +189,10 @@ github.com/opdev/container-certification v0.0.0-20230817143432-23a6f87939f9 h1:R
 github.com/opdev/container-certification v0.0.0-20230817143432-23a6f87939f9/go.mod h1:P7KKSjCVh/qmp9Vg/32WVr9tpiLa7MUBgjACvF3jrbE=
 github.com/opdev/container-certification v0.0.0-20230817144110-425b7149819c h1:sm4XI9nlW+NuJUmW/2NwHjK9ZPX0zXDOqkVBBNlZB4U=
 github.com/opdev/container-certification v0.0.0-20230817144110-425b7149819c/go.mod h1:P7KKSjCVh/qmp9Vg/32WVr9tpiLa7MUBgjACvF3jrbE=
+github.com/opdev/container-certification v0.0.0-20230829183708-330fdf8b1933 h1:qQPvfgZSf5Vjv6TGRUWfcbA2umswJbju9nckROTnWg0=
+github.com/opdev/container-certification v0.0.0-20230829183708-330fdf8b1933/go.mod h1:P7KKSjCVh/qmp9Vg/32WVr9tpiLa7MUBgjACvF3jrbE=
+github.com/opdev/container-certification v0.0.0-20230829185753-3632b7dc1712 h1:WqMmPu4ftb91NHltKz5SL2akXM0ygKOcY5scxdFCdVM=
+github.com/opdev/container-certification v0.0.0-20230829185753-3632b7dc1712/go.mod h1:P7KKSjCVh/qmp9Vg/32WVr9tpiLa7MUBgjACvF3jrbE=
 github.com/opdev/plugin-template v0.0.0-20230614203351-cd23b8d33ddc h1:LbMErYItzy08V5W3tJXyLe1AAa/GjhHPKHIsHrs5xXA=
 github.com/opdev/plugin-template v0.0.0-20230614203351-cd23b8d33ddc/go.mod h1:BXZUrhJ5bDF8+eLtXhTKGNPVgbtDeqvNRT5Vgp9UMUQ=
 github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=
