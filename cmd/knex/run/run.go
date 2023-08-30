@@ -2,13 +2,13 @@ package run
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"os"
 	"strings"
 
 	"github.com/bombsimon/logrusr/v4"
 	"github.com/go-logr/logr"
+	"github.com/opdev/knex/formatters"
 	"github.com/opdev/knex/plugin/v0"
 	"github.com/opdev/knex/types"
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
@@ -109,7 +109,7 @@ func run(
 	// Writing Results, also borrowed from Preflight (RunPreflight, specifically)
 	// Fail early if we cannot write to the results path.
 	// TODO(Jose): The preflight version of this handles formatters, etc. Stubbed this out to .txt for PoC
-	resultsFilePath, err := artifactsWriter.WriteFile("results.txt", strings.NewReader(""))
+	resultsFilePath, err := artifactsWriter.WriteFile("results.json", strings.NewReader(""))
 	if err != nil {
 		return err
 	}
@@ -137,7 +137,7 @@ func run(
 	}
 
 	results := plugin.Results(ctx)
-	textResults, err := formatAsText(ctx, results)
+	textResults, err := formatAsJSON(ctx, results)
 	if err != nil {
 		logger.Error(err, "unable to format results")
 		return err
@@ -145,7 +145,7 @@ func run(
 
 	_, err = resultsOutputTarget.Write(textResults)
 	if err != nil {
-		logger.Error(err, "unable to write text results")
+		logger.Error(err, "unable to write results")
 	}
 
 	if config.GetBool("submit") {
@@ -158,26 +158,7 @@ func run(
 	return nil
 }
 
-type FormatterFunc = func(context.Context, types.Results) (response []byte, formattingError error)
-
-// Just as poc formatter, borrowed from preflight's library docs
-var formatAsText FormatterFunc = func(_ context.Context, r types.Results) (response []byte, formattingError error) {
-	b := []byte{}
-	for _, v := range r.Passed {
-		t := v.ElapsedTime.Milliseconds()
-		s := fmt.Sprintf("PASSED  %s in %dms\n", v.Name(), t)
-		b = append(b, []byte(s)...)
-	}
-	for _, v := range r.Failed {
-		t := v.ElapsedTime.Milliseconds()
-		s := fmt.Sprintf("FAILED  %s in %dms\n", v.Name(), t)
-		b = append(b, []byte(s)...)
-	}
-	for _, v := range r.Errors {
-		t := v.ElapsedTime.Milliseconds()
-		s := fmt.Sprintf("ERRORED %s in %dms\n", v.Name(), t)
-		b = append(b, []byte(s)...)
-	}
-
-	return b, nil
+var formatAsJSON formatters.FormatterFunc = func(ctx context.Context, r types.Results) (response []byte, formattingError error) {
+	f, _ := formatters.NewByName("json")
+	return f.Format(ctx, r)
 }
