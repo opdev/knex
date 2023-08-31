@@ -6,10 +6,10 @@ import (
 
 	// register all plugins
 	_ "github.com/opdev/knex/plugin/registration"
-	"github.com/opdev/knex/version"
 
 	"github.com/opdev/knex/cmd/knex/listplugins"
 	"github.com/opdev/knex/cmd/knex/run"
+	"github.com/opdev/knex/cmd/knex/version"
 	"github.com/spf13/cobra"
 )
 
@@ -17,13 +17,13 @@ func NewCommand(
 	ctx context.Context,
 ) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "knex",
-		Short:   "Pluggable Certification",
-		Version: version.Version.String(),
+		Use:   "knex",
+		Short: "Pluggable Certification",
 	}
 
 	cmd.AddCommand(listplugins.NewCommand(ctx))
 	cmd.AddCommand(run.NewCommand(ctx))
+	cmd.AddCommand(version.NewCommand(ctx))
 	cmd.AddCommand(run.NewBackwardsCompatCheckCommand(ctx))
 
 	return cmd
