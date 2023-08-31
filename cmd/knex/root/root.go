@@ -6,6 +6,7 @@ import (
 
 	// register all plugins
 	_ "github.com/opdev/knex/plugin/registration"
+	"github.com/opdev/knex/version"
 
 	"github.com/opdev/knex/cmd/knex/listplugins"
 	"github.com/opdev/knex/cmd/knex/run"
@@ -18,7 +19,7 @@ func NewCommand(
 	cmd := &cobra.Command{
 		Use:     "knex",
 		Short:   "Pluggable Certification",
-		Version: "0.0.0",
+		Version: version.Version.String(),
 	}
 
 	cmd.AddCommand(listplugins.NewCommand(ctx))
