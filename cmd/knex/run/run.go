@@ -26,7 +26,8 @@ func NewCommand(
 	ctx context.Context,
 ) *cobra.Command {
 	cmd := &cobra.Command{
-		Use: "run",
+		Use:   "run",
+		Short: "Run a Certification Plugin.",
 	}
 
 	cmd.PersistentFlags().String("logfile", "", "Where the execution logfile will be written. (env: PFLT_LOGFILE)")
