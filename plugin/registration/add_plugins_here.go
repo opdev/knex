@@ -8,6 +8,7 @@ import (
 	_ "github.com/opdev/container-certification/plugin"
 	_ "github.com/opdev/container-certification/plugin/rootexception"
 	_ "github.com/opdev/container-certification/plugin/scratchexception"
+	_ "github.com/opdev/operator-certification"
 
 	_ "github.com/opdev/plugin-template/plugin"
 )
