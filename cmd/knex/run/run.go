@@ -22,9 +22,7 @@ const (
 	DefaultLogLevel = "info"
 )
 
-func NewCommand(
-	ctx context.Context,
-) *cobra.Command {
+func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "run",
 		Short: "Run a Certification Plugin.",
@@ -39,9 +37,9 @@ func NewCommand(
 		invocation := i
 		plug := p
 		config := spfviper.New()
-		plcmd := plugin.NewCommand(ctx, config, invocation, plug)
+		plcmd := plugin.NewCommand(config, invocation, plug)
 		plcmd.RunE = func(cmd *cobra.Command, args []string) error {
-			return run(ctx, args, invocation, config, &types.ResultWriterFile{})
+			return run(cmd.Context(), args, invocation, config, &types.ResultWriterFile{})
 		}
 
 		// Configure the parent command's config bindings after the plugin has bound its flagset.

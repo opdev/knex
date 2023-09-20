@@ -1,16 +1,13 @@
 package listplugins
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/opdev/knex/plugin/v0"
 	"github.com/spf13/cobra"
 )
 
-func NewCommand(
-	ctx context.Context,
-) *cobra.Command {
+func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-plugins",
 		Short: "list the plugins that have been registered",

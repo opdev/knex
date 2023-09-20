@@ -1,8 +1,6 @@
 package run
 
 import (
-	"context"
-
 	"github.com/opdev/knex/plugin/v0"
 	"github.com/opdev/knex/types"
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
@@ -16,7 +14,7 @@ import (
 // `preflight check` command, but will run the corresponding plugins instead. It
 // is expected that this subcommand will be removed near-future after this
 // redesign is published.
-func NewBackwardsCompatCheckCommand(ctx context.Context) *cobra.Command {
+func NewBackwardsCompatCheckCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "check",
 		Short: "Run checks for an operator or container. This is subcommand exists for backwards compatibility and will be removed in a future release.",
@@ -40,19 +38,19 @@ func NewBackwardsCompatCheckCommand(ctx context.Context) *cobra.Command {
 	containerConfig.SetDefault("submit", false)
 
 	// Build out the Container Plugin
-	cmd.AddCommand(containerPlugin(ctx, containerConfig))
+	cmd.AddCommand(containerPlugin(containerConfig))
 	// cmd.Hidden = true
 	return cmd
 }
 
 // containerPlugin explicitly calls the check-container plugin. This should only
 // be used for backwards compatibility purposes.
-func containerPlugin(ctx context.Context, config *viper.Viper) *cobra.Command {
+func containerPlugin(config *viper.Viper) *cobra.Command {
 	// TODO(Jose): This is hard coded to depend on the name of the container check to be check-container
 	plug := plugin.RegisteredPlugins()["check-container"]
-	plcmd := plugin.NewCommand(ctx, config, "check-container", plug)
+	plcmd := plugin.NewCommand(config, "check-container", plug)
 	plcmd.RunE = func(cmd *cobra.Command, args []string) error {
-		return run(ctx, args, "check-container", config, &types.ResultWriterFile{})
+		return run(cmd.Context(), args, "check-container", config, &types.ResultWriterFile{})
 	}
 	plcmd.Use = "container"
 	return plcmd

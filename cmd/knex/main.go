@@ -8,11 +8,10 @@ import (
 )
 
 func main() {
-	entrypoint := root.NewCommand(
-		context.Background(),
-	)
+	entrypoint := root.NewCommand()
 
-	if err := entrypoint.Execute(); err != nil {
+	ctx := context.Background()
+	if err := entrypoint.ExecuteContext(ctx); err != nil {
 		log.Fatal(err)
 	}
 }

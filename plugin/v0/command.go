@@ -1,7 +1,6 @@
 package plugin
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -9,7 +8,6 @@ import (
 )
 
 func NewCommand(
-	ctx context.Context,
 	config *viper.Viper,
 	invocation string,
 	pl Plugin,
