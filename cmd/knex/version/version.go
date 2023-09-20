@@ -1,7 +1,6 @@
 package version
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -12,7 +11,7 @@ import (
 
 const flagAsJSON = "as-json"
 
-func NewCommand(ctx context.Context) *cobra.Command {
+func NewCommand() *cobra.Command {
 	cmd := cobra.Command{
 		Use:   "version",
 		Short: "Version information for this tool.",
@@ -26,7 +25,6 @@ func NewCommand(ctx context.Context) *cobra.Command {
 		},
 	}
 
-	cmd.SetContext(ctx)
 	cmd.Flags().Bool(flagAsJSON, false, "Returns version metadata as a JSON blob")
 	return &cmd
 }

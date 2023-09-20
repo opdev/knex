@@ -2,7 +2,6 @@
 package root
 
 import (
-	"context"
 
 	// register all plugins
 	_ "github.com/opdev/knex/plugin/registration"
@@ -13,19 +12,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewCommand(
-	ctx context.Context,
-) *cobra.Command {
+func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "knex",
 		Short: "Pluggable Certification",
 	}
 
-	cmd.AddCommand(listplugins.NewCommand(ctx))
-	cmd.AddCommand(run.NewCommand(ctx))
-	cmd.AddCommand(version.NewCommand(ctx))
-	cmd.AddCommand(run.NewBackwardsCompatCheckCommand(ctx))
-
+	cmd.AddCommand(listplugins.NewCommand())
+	cmd.AddCommand(run.NewCommand())
+	cmd.AddCommand(version.NewCommand())
+	cmd.AddCommand(run.NewBackwardsCompatCheckCommand())
 	return cmd
 }
 
