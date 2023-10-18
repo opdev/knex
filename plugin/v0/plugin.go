@@ -54,7 +54,7 @@ type Plugin interface {
 		// of Init.
 		ctx context.Context,
 		// config contains the parsed flag/environment, including those flag values
-		// provided by the plugin's BindFlags call.
+		// provided by the plugin's Flags call.
 		config *viper.Viper,
 		// args contains positional arguments being passed to the plugin itself.
 		args []string) error
@@ -63,12 +63,13 @@ type Plugin interface {
 	Name() string
 	// Version is a semantic version representation for your plugin.
 	Version() semver.Version
-	// BindFlags binds a plugin's flags to the runtime execution. The following
+	// Flags returns a FlagSet representing a plugin's flags. The following
 	// flags should not be used by plugins as they're used by preflight itself.
 	// - loglevel
 	// - logfile
 	// - artifacts
-	BindFlags(*pflag.FlagSet) *pflag.FlagSet
+	// Any attempt to override these will end up ignored.
+	Flags() *pflag.FlagSet
 	// Run executes the plugin. Leaving commented for now. Using an arbitrary "run" method like this
 	// may be worth considering if existing structured lements like the Check Engine don't work for this use case.
 	// Run() error

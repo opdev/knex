@@ -18,7 +18,7 @@ func NewCommand(
 		Version: pl.Version().String(),
 	}
 
-	pl.BindFlags(cmd.Flags())
+	cmd.Flags().AddFlagSet(pl.Flags())
 	if err := config.BindPFlags(cmd.LocalFlags()); err != nil {
 		// Note(komish): This panics to help preflight detect if flag binding will actually work. This is still
 		// a runtime, check, though, and doesn't happen until we call the run subcommna.d

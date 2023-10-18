@@ -37,12 +37,7 @@ func NewCommand() *cobra.Command {
 		invocation := i
 		plug := p
 		config := spfviper.New()
-		plcmd := plugin.NewCommand(config, invocation, plug)
-		plcmd.RunE = func(cmd *cobra.Command, args []string) error {
-			return run(cmd.Context(), args, invocation, config, &types.ResultWriterFile{})
-		}
 
-		// Configure the parent command's config bindings after the plugin has bound its flagset.
 		_ = config.BindPFlag("logfile", cmd.PersistentFlags().Lookup("logfile"))
 		_ = config.BindPFlag("loglevel", cmd.PersistentFlags().Lookup("loglevel"))
 		_ = config.BindPFlag("artifacts", cmd.PersistentFlags().Lookup("artifacts"))
@@ -52,6 +47,11 @@ func NewCommand() *cobra.Command {
 		config.SetDefault("loglevel", DefaultLogLevel)
 		config.SetDefault("artifacts", artifacts.DefaultArtifactsDir)
 		config.SetDefault("submit", false)
+
+		plcmd := plugin.NewCommand(config, invocation, plug)
+		plcmd.RunE = func(cmd *cobra.Command, args []string) error {
+			return run(cmd.Context(), args, invocation, config, &types.ResultWriterFile{})
+		}
 
 		cmd.AddCommand(plcmd)
 	}

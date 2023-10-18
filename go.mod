@@ -11,9 +11,9 @@ require (
 	github.com/google/go-containerregistry v0.15.2
 	github.com/onsi/ginkgo/v2 v2.11.0
 	github.com/onsi/gomega v1.27.10
-	github.com/opdev/container-certification v0.0.0-20230830162041-3a57e542f654
-	github.com/opdev/operator-certification v0.0.0-20230920193843-3dd3f038d669
-	github.com/opdev/plugin-template v0.0.0-20230614203351-cd23b8d33ddc
+	github.com/opdev/container-certification v0.0.0-20231018162739-576e8dbae776
+	github.com/opdev/operator-certification v0.0.0-20231018171003-7b74e81d895d
+	github.com/opdev/plugin-template v0.0.0-20231018162545-72ec25adbd4f
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230523134535-51af09a44662
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.7.0
@@ -103,11 +103,11 @@ require (
 	go.opentelemetry.io/otel/trace v1.10.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
-	golang.org/x/net v0.15.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/oauth2 v0.7.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
-	golang.org/x/sys v0.12.0 // indirect
-	golang.org/x/term v0.12.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/term v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.13.0 // indirect
