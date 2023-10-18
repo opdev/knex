@@ -27,7 +27,6 @@ func NewBackwardsCompatCheckCommand() *cobra.Command {
 	cmd.PersistentFlags().BoolP("submit", "s", false, "Submit results to Red Hat if the called plugin supports it automated submission through this tool.")
 
 	containerConfig := spfviper.New()
-	// Configure the parent command's config bindings after the plugin has bound its flagset.
 	_ = containerConfig.BindPFlag("logfile", cmd.PersistentFlags().Lookup("logfile"))
 	_ = containerConfig.BindPFlag("loglevel", cmd.PersistentFlags().Lookup("loglevel"))
 	_ = containerConfig.BindPFlag("artifacts", cmd.PersistentFlags().Lookup("artifacts"))
